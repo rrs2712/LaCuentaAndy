@@ -33,10 +33,10 @@
     <string name="propina_spn_header">Porcentaje de propina:</string>
     <string name="propina_ed_hint">$00.00</string>
     <string-array name="propina_spn_filler">
-	    <item> 5%</item>
-	    <item>10%</item>
-	    <item>15%</item>
-	    <item>20%</item>
+	    <item> 5</item>
+	    <item>10</item>
+	    <item>15</item>
+	    <item>20</item>
     </string-array>
     
 <!--     redondear -->
@@ -44,8 +44,8 @@
     <string name="home_sp_tip">Redondear: </string>
     
     
-    <string name="home_tv_signo_porcentual">%</string>
-    <string name="home_tv_signo_moneda">$</string>
+    <string name="signo_porcentual">%</string>
+    <string name="signo_moneda">$</string>
 
     
     
