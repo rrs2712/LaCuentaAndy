@@ -22,9 +22,7 @@
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        android:inputType="numberDecimal"
-	        android:onClick="CalularCta"
 	        android:hint="@string/monto_ed_hint" >	
-	        <requestFocus />
     	</EditText>     
     </LinearLayout>
     
@@ -43,32 +41,7 @@
 	        android:id="@+id/people_spn"
 	        android:layout_weight="1"
 	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:entries="@array/people_filler"
-	        android:prompt="@string/people_spn_header" />
-    	
-<!--    		<LinearLayout  -->
-<!--    		    android:layout_weight="1" -->
-<!-- 	        android:layout_width="0dp" -->
-<!-- 		    android:layout_height="wrap_content" -->
-<!-- 	        android:orientation="vertical" > -->
-<!--    		    <Button -->
-<!--    		        android:id="@+id/people_btn_mas" -->
-<!-- 		        android:layout_width="match_parent" -->
-<!-- 		        android:layout_height="wrap_content" -->
-<!-- 		        android:text="@string/btn_mas" /> -->
-<!--    		    <EditText -->
-<!-- 	            android:id="@+id/people_ed" -->
-<!-- 	            android:layout_width="match_parent" -->
-<!-- 		        android:layout_height="wrap_content" -->
-<!-- 	            android:inputType="number"  -->
-<!-- 	            android:hint="@string/people_ed_txt" /> -->
-<!--    		    <Button -->
-<!--    		        android:id="@+id/people_btn_menos" -->
-<!-- 		        android:layout_width="match_parent" -->
-<!-- 		        android:layout_height="wrap_content" -->
-<!-- 		        android:text="@string/btn_menos" /> -->
-<!--    		</LinearLayout>        -->
+	        android:layout_height="wrap_content" />
     </LinearLayout>
     
     
@@ -79,64 +52,61 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-        <TextView
-            android:id="@+id/propina_tv"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/propina_tv" />
-        <Spinner
-	        android:id="@+id/propina_spn"
-	        android:layout_weight="1"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:entries="@array/propina_spn_filler"
-	        android:prompt="@string/propina_spn_header" />
-        <EditText
-	        android:id="@+id/propina_ed"
-	        android:layout_weight="1"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:inputType="numberDecimal"
-	        android:hint="@string/propina_ed_hint" />
-<!--         <TextView -->
-<!-- 	        android:layout_width="wrap_content" -->
+        android:orientation="vertical" >
+<!-- 		<LinearLayout  -->
+<!-- 	        android:layout_width="match_parent" -->
 <!-- 	        android:layout_height="wrap_content" -->
-<!-- 	        android:layout_gravity="center" -->
-<!-- 	        android:text="@string/home_tv_signo_porcentual" /> -->
-<!--         <EditText -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="match_parent" -->
-<!--             android:ems="4" -->
-<!--             android:layout_gravity="center" -->
-<!--             android:inputType="number" /> -->
-<!--    		<LinearLayout  -->
-<!--    		    android:layout_width="wrap_content" -->
-<!-- 	        android:layout_height="wrap_content" -->
-<!-- 	        android:orientation="vertical" > -->
-<!--    		    <Button -->
-<!-- 		        style="?android:attr/buttonStyleSmall" -->
-<!-- 		        android:layout_width="wrap_content" -->
+<!-- 	        android:orientation="horizontal" > -->
+<!-- 			    <TextView -->
+<!-- 	            android:id="@+id/propina_tv" -->
+<!-- 		        android:layout_weight="1" -->
+<!-- 	        	android:layout_width="0dp" -->
 <!-- 		        android:layout_height="wrap_content" -->
-<!-- 		        android:text="@string/btn_mas" /> -->
-<!--    		    <Button -->
-<!-- 		        style="?android:attr/buttonStyleSmall" -->
-<!-- 		        android:layout_width="wrap_content" -->
-<!-- 		        android:layout_height="wrap_content" -->
-<!-- 		        android:text="@string/btn_menos" /> -->
-<!--    		</LinearLayout>   		 -->
-<!--    		<TextView -->
-<!-- 	        android:layout_width="wrap_content" -->
-<!-- 	        android:layout_height="wrap_content" -->
-<!-- 	        android:layout_gravity="center" -->
-<!-- 	        android:text="@string/home_tv_signo_moneda" /> -->
-<!--         <EditText -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="match_parent" -->
-<!--             android:layout_gravity="center" -->
-<!--             android:ems="4" -->
-<!--             android:inputType="number" > -->
-<!--     	</EditText> -->
+<!-- 		        android:gravity="center_horizontal" -->
+<!-- 		        android:text="@string/propina_tv" /> -->
+<!-- 		</LinearLayout> -->
+		<LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+			    <TextView
+		        android:layout_weight="1"
+	        	android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:gravity="center_horizontal"
+		        android:text="@string/signo_porcentual" />
+			    <TextView
+	            android:id="@+id/propina_tv"
+		        android:layout_weight="1"
+	        	android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:gravity="center_horizontal"
+		        android:text="@string/propina_tv" />
+			    <TextView
+		        android:layout_weight="1"
+	        	android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:gravity="center_horizontal"
+		        android:text="@string/signo_moneda" />
+		</LinearLayout>
+		<LinearLayout 
+		    android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal">
+			<Spinner
+		        android:id="@+id/propina_spn"
+		        android:layout_weight="1"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content" />
+	        <EditText
+		        android:id="@+id/propina_ed"
+		        android:layout_weight="1"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:inputType="numberDecimal"
+		        android:hint="@string/propina_ed_hint" />    
+		</LinearLayout>       
+        
     </LinearLayout>
     
 
