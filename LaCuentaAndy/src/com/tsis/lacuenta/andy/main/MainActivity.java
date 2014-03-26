@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.tsis.lacuenta.andy.dao.BDLaCuenta_DAO;
 import com.tsis.lacuenta.core.main.Cuenta;
 
 public class MainActivity extends ActionBarActivity {
@@ -253,6 +254,20 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void save(View view){
+		TextView resul = (TextView) findViewById(R.id.resultado_tv);
+		BDLaCuenta_DAO bd = new BDLaCuenta_DAO(MainActivity.this);
+		Cuenta cuenta = new Cuenta(monto, personas, propina, tipoCta);
+		bd.insert(monto, personas, propina,cuenta.getCtaIndividual(redondear));
+		resul.setText("Guardado!");
+	}
+	
+	public void show(View view){
+		TextView resul = (TextView) findViewById(R.id.resultado_tv);
+		BDLaCuenta_DAO bd = new BDLaCuenta_DAO(MainActivity.this);
+		resul.setText(bd.consultaTodo());
 	}
 
 //	/**
