@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -240,8 +241,14 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+//		getMenuInflater().inflate(R.menu.main, menu);
+//		return true;
+		
+		// Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_activity_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
+
 	}
 
 	@Override
@@ -249,14 +256,30 @@ public class MainActivity extends ActionBarActivity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+//		int id = item.getItemId();
+//		if (id == R.id.action_settings) {
+//			return true;
+//		}
+//		return super.onOptionsItemSelected(item);
+		
+		 // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.action_save:
+	            saveCta();
+	            return true;
+	        case R.id.action_consulta:
+	            showCta();
+	            return true;
+	        case R.id.action_export:
+	        	borrarTabla();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+
 	}
 	
-	public void save(View view){
+	public void saveCta(){
 		TextView resul = (TextView) findViewById(R.id.resultado_tv);
 		BDLaCuenta_DAO bd = new BDLaCuenta_DAO(MainActivity.this);
 		Cuenta cuenta = new Cuenta(monto, personas, propina, tipoCta);
@@ -264,10 +287,16 @@ public class MainActivity extends ActionBarActivity {
 		resul.setText("Guardado!");
 	}
 	
-	public void show(View view){
+	public void showCta(){
 		TextView resul = (TextView) findViewById(R.id.resultado_tv);
 		BDLaCuenta_DAO bd = new BDLaCuenta_DAO(MainActivity.this);
 		resul.setText(bd.consultaTodo());
+	}
+	
+	public void borrarTabla(){
+		TextView resul = (TextView) findViewById(R.id.resultado_tv);
+		BDLaCuenta_DAO bd = new BDLaCuenta_DAO(MainActivity.this);
+		resul.setText(bd.deleteAll());
 	}
 
 //	/**

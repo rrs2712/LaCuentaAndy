@@ -1,5 +1,9 @@
 package com.tsis.lacuenta.andy.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,6 +17,7 @@ import com.tsis.lacuenta.andy.db.DBHelper;
 public class BDLaCuenta_DAO {
 
 	private Context context;
+	private static final String bdDateFormat = "yyyy-MM-dd HH:mm:ss";
 	
 	public BDLaCuenta_DAO(Context context){
 		this.context = context;
@@ -23,9 +28,10 @@ public class BDLaCuenta_DAO {
 		DBHelper dbHelper = new DBHelper(context);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		
+		
 		try{
 			ContentValues values = new ContentValues();
-			values.put(DBHelper.FECHA, "2014 03 26"); //ToDo 
+			values.put(DBHelper.FECHA, getTimeStamp()); //ToDo 
 			values.put(DBHelper.MONTO, String.valueOf(monto));
 			values.put(DBHelper.PERSONAS, String.valueOf(personas));
 			values.put(DBHelper.PROPINA, String.valueOf(propina));
@@ -42,6 +48,7 @@ public class BDLaCuenta_DAO {
 		return false;
 	}
 	
+
 	public String consultaTodo(){
 		String respuesta ="";
 		
@@ -73,10 +80,10 @@ public class BDLaCuenta_DAO {
 		for (c.moveToFirst();!c.isAfterLast();c.moveToNext()){      			
 			respuesta=respuesta 
 //				+ c.getString(indexID)  + "-"
-				+ c.getString(indexFecha) + "-"
-				+ c.getString(indexMonto) + "-"
-				+ c.getString(indexPersonas) + "-"
-				+ c.getString(indexPropina) + "-"
+				+ c.getString(indexFecha) + "*"
+				+ c.getString(indexMonto) + "*"
+				+ c.getString(indexPersonas) + "*"
+				+ c.getString(indexPropina) + "*"
 				+ c.getString(indexMontoPersonal) + "\n";
 		}
 		
@@ -84,5 +91,28 @@ public class BDLaCuenta_DAO {
 		db.close();
 		
 		return respuesta;
+	}
+	
+	public String deleteAll(){
+		
+//      CREAMOS UNA NUEVA CONEXION PARA LEER DATOS DE LA BD
+		DBHelper dbHelper = new DBHelper(context);
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		
+		try {
+			db.delete(DBHelper.TABLE_NAME, null, null);
+		} catch (Exception e) {
+			return "El pex: " + e.getMessage();
+		}
+		
+		return "exito!";
+	}
+	
+	private String getTimeStamp() {
+		
+		Locale us = new Locale(Locale.US.getLanguage(), Locale.US.getCountry());
+		Date currentDate = new Date();
+		SimpleDateFormat f = new SimpleDateFormat(bdDateFormat, us);
+		return f.format(currentDate);
 	}
 }

@@ -43,6 +43,11 @@
     <string name="redondear_tv">Redondear: </string>
     <string name="home_sp_tip">Redondear: </string>
     
+<!--     actions -->
+    <string name="action_save">Guardar</string>
+    <string name="action_consulta">Consultar</string>
+    <string name="action_export">Borrar Tabla</string>
+    
     
     <string name="signo_porcentual">%</string>
     <string name="signo_moneda">$</string>
