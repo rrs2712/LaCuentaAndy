@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,17 +40,27 @@ public class Export extends Activity {
 		this.contexto = contexto;
 	}
 
-	public boolean exportFile() {
-//		Log.d(TAG, "Context path: " + this.contexto.getFilesDir().getPath());
-		StringBuilder contenido = getFileContent();
+	public boolean exportByCurrentMonth() {
+		Calendar ini = Calendar.getInstance();
+		ini.set(Calendar.DAY_OF_MONTH, ini.getActualMinimum(Calendar.DAY_OF_MONTH));
+		ini.set(Calendar.HOUR_OF_DAY, 0);
+		ini.set(Calendar.MINUTE, 0);
+		ini.set(Calendar.SECOND, 0);
+		
+		Calendar fin = Calendar.getInstance();
+		fin.set(Calendar.DAY_OF_MONTH, fin.getActualMaximum(Calendar.DAY_OF_MONTH));
+		fin.set(Calendar.HOUR_OF_DAY, 23);
+		fin.set(Calendar.MINUTE, 59);
+		fin.set(Calendar.SECOND, 59);
+		
+		
+		StringBuilder contenido = getFileContent(ini.getTime(), fin.getTime());
 		return writeToFile(FILENAME, contenido.toString(), this.contexto);
 	}
 
 	private boolean writeToFile(String fileName, String contenido, Context contexto) {
 		
 		try {
-//			File file = new File(contexto.getFilesDir().getPath(), fileName);
-//			File file = getPublicDir(fileName);
 			
 			File outputPath = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + FOLDER);
 			
@@ -67,8 +79,7 @@ public class Export extends Activity {
 			
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
-//			bw.write(contenido);
-			bw.write(contenido.toString());
+			bw.write(contenido);
 			bw.close();
 			Log.i(TAG, "Archivo escrito correctamente!");
  
@@ -79,32 +90,10 @@ public class Export extends Activity {
 
 		return true;
 	}
-
-//	private boolean writeToFile(String fileName, String data, Context context) {
-//		File file = new File(this.context.getFilesDir().getPath(),
-//				this.FILENAME);
-//
-//		try {
-//			if (!file.exists()) {
-//				file.createNewFile();
-//				Log.d(TAG, "El archivo no existia");
-//			}
-//
-//			FileOutputStream outputStream = openFileOutput(fileName,Context.MODE_PRIVATE);
-//			outputStream.write(data.getBytes());
-//			outputStream.close();
-//		} catch (Exception e) {
-////			e.printStackTrace();
-//			Log.e(TAG, "File write failed: " + e.toString());
-//			return false;
-//		}
-//
-//		return true;
-//	}
 	
-	private StringBuilder getFileContent() {
+	private StringBuilder getFileContent(Date fechaInicio, Date fechaFin) {
 		BDLaCuenta_DAO bd = new BDLaCuenta_DAO(this.contexto);
-		List<CtaHistorial_DTO> cuentas = bd.getCtasByDate(new Date(), new Date());
+		List<CtaHistorial_DTO> cuentas = bd.getCtasByDate(fechaInicio, fechaFin);
 		Log.i(TAG, "Se obtienen " + cuentas.size() + " cuentas de la BD");
 		
 		StringBuilder contenido = new StringBuilder(CABECERO);
@@ -125,23 +114,6 @@ public class Export extends Activity {
 			contenido.append(String.valueOf(cuenta.getMontoxPersona()));
 		}
 		return contenido;
-	}
-
-	public File getPublicDir(String newDirName) {
-	    Log.d(TAG, "Se puede escribir externo? " + isExternalStorageWritable());
-		
-	    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), newDirName);
-	    Log.d(TAG, "Dir que se pretende crear =" + file.getAbsolutePath());
-	    
-	    if (!file.mkdirs()) {
-	        Log.e(TAG, "Directory not created = " + file.getAbsolutePath());
-	    }
-	    return file;
-	}
-	
-	public String dirMain() {
-		Log.d(TAG, "Entra al dir Main: " + this.contexto.getFilesDir().getPath());
-		return this.contexto.getFilesDir().getPath();
 	}
 	
 	/* Checks if external storage is available for read and write */

@@ -47,7 +47,7 @@
     <string name="action_save">Guardar</string>
     <string name="action_consulta">Consultar</string>
     <string name="action_borrar">Borrar Tabla</string>
-    <string name="action_export">Exportar</string>
+    <string name="action_export">Exportar (Mes)</string>
     
     
     <string name="signo_porcentual">%</string>

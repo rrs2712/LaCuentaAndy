@@ -3,7 +3,9 @@ package com.tsis.lacuenta.andy.dao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,6 +22,7 @@ import com.tsis.lacuenta.core.dto.CtaHistorial_DTO;
 
 public class BDLaCuenta_DAO {
 
+	private final String TAG = BDLaCuenta_DAO.class.getName();
 	private Context context;
 	public static final String bdDateFormat = "yyyy-MM-dd HH:mm:ss";
 	
@@ -150,23 +153,24 @@ public class BDLaCuenta_DAO {
 			Locale us = new Locale(Locale.US.getLanguage(), Locale.US.getCountry());
 			SimpleDateFormat f = new SimpleDateFormat(bdDateFormat, us);
 			
-			for (c.moveToFirst();!c.isAfterLast();c.moveToNext()){      			
-								
-				Date fecha = f.parse(c.getString(indexFecha));				
-				double monto = Double.valueOf(c.getString(indexMonto));
-				int personas = Integer.valueOf(c.getString(indexPersonas));
-				double propina = Double.valueOf(c.getString(indexPropina));
-				double montoxPersona = Double.valueOf(c.getString(indexMontoPersonal));
-				
-				CtaHistorial_DTO unaCta = new CtaHistorial_DTO();
-				unaCta.setFecha(fecha);
-				unaCta.setMontoCta(monto);
-				unaCta.setPersonas(personas);
-				unaCta.setPropina(propina);
-				unaCta.setMontoxPersona(montoxPersona);
-				
-				lista.add(unaCta);
-				
+			for (c.moveToFirst();!c.isAfterLast();c.moveToNext()){      							
+//				SI LA FECHA ESTA EN EL RANGO DE FECHAS ENTONCES LA AGREGAMOS A LA LISTA
+				if (isDateInRage(fechaInicio, fechaFin, f.parse(c.getString(indexFecha)))) {
+					Date fecha = f.parse(c.getString(indexFecha));				
+					double monto = Double.valueOf(c.getString(indexMonto));
+					int personas = Integer.valueOf(c.getString(indexPersonas));
+					double propina = Double.valueOf(c.getString(indexPropina));
+					double montoxPersona = Double.valueOf(c.getString(indexMontoPersonal));
+					
+					CtaHistorial_DTO unaCta = new CtaHistorial_DTO();
+					unaCta.setFecha(fecha);
+					unaCta.setMontoCta(monto);
+					unaCta.setPersonas(personas);
+					unaCta.setPropina(propina);
+					unaCta.setMontoxPersona(montoxPersona);
+					
+					lista.add(unaCta);
+				}
 			}
 		} catch (ParseException e) {
 			Log.v("BDLaCuenta_DAO.getCtasByDate", "Pex: " + e.getMessage());
@@ -177,5 +181,23 @@ public class BDLaCuenta_DAO {
 		db.close();
 		
 		return lista;
+	}
+
+	private boolean isDateInRage(Date fechaInicio, Date fechaFin, Date fechaToTest) {
+		Calendar ini = new GregorianCalendar();
+		Calendar fin = new GregorianCalendar();
+		Calendar miFecha = new GregorianCalendar();
+		
+		ini.setTime(fechaInicio);
+		fin.setTime(fechaFin);
+		miFecha.setTime(fechaToTest);
+		
+		Locale us = new Locale(Locale.US.getLanguage(), Locale.US.getCountry());
+		SimpleDateFormat f = new SimpleDateFormat(bdDateFormat, us);
+		
+		boolean answer = (miFecha.after(ini) && miFecha.before(fin)) ? true : false;
+		Log.i(TAG, f.format(fechaInicio) + "<" + f.format(fechaToTest) + "<" + f.format(fechaFin) + "=" + answer);
+				
+		return answer;
 	}
 }

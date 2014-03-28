@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.tsis.lacuenta.andy.bo.Export;
@@ -270,12 +271,12 @@ public class MainActivity extends ActionBarActivity {
 	        case R.id.action_save:
 	            saveCta();
 	            return true;
-	        case R.id.action_consulta:
-	            showCta();
-	            return true;
-	        case R.id.action_borrar:
-	        	borrarTabla();
-	            return true;
+//	        case R.id.action_consulta:
+//	            showCta();
+//	            return true;
+//	        case R.id.action_borrar:
+//	        	borrarTabla();
+//	            return true;
 	        case R.id.action_export:
 	        	exportCSV();
 	            return true;
@@ -306,9 +307,16 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	public void exportCSV(){
-		TextView resul = (TextView) findViewById(R.id.resultado_tv);
+//		TextView resul = (TextView) findViewById(R.id.resultado_tv);
 		Export exp = new Export(MainActivity.this);
-		resul.setText("Exportado="+exp.exportFile());
+		
+		if (exp.exportByCurrentMonth()) {
+			Toast.makeText(MainActivity.this, "Archivo exportado con exito!", Toast.LENGTH_SHORT).show();;
+		}else {
+			Toast.makeText(MainActivity.this, "Archivo no exportado", Toast.LENGTH_SHORT).show();;
+		}
+		
+//		resul.setText("Exportado="+exp.exportByCurrentMonth());
 	}
 
 //	/**
