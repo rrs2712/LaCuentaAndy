@@ -1,7 +1,10 @@
 package com.tsis.lacuenta.andy.dao;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import android.content.ContentValues;
@@ -13,11 +16,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.tsis.lacuenta.andy.db.DBHelper;
+import com.tsis.lacuenta.core.dto.CtaHistorial_DTO;
 
 public class BDLaCuenta_DAO {
 
 	private Context context;
-	private static final String bdDateFormat = "yyyy-MM-dd HH:mm:ss";
+	public static final String bdDateFormat = "yyyy-MM-dd HH:mm:ss";
 	
 	public BDLaCuenta_DAO(Context context){
 		this.context = context;
@@ -114,5 +118,64 @@ public class BDLaCuenta_DAO {
 		Date currentDate = new Date();
 		SimpleDateFormat f = new SimpleDateFormat(bdDateFormat, us);
 		return f.format(currentDate);
+	}
+	
+	public List<CtaHistorial_DTO> getCtasByDate(Date fechaInicio, Date fechaFin){
+		List<CtaHistorial_DTO> lista = new ArrayList<CtaHistorial_DTO>();
+		
+//      CREAMOS UNA NUEVA CONEXION PARA LEER DATOS DE LA BD
+		DBHelper dbHelper = new DBHelper(context);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		
+//		CREAMOS UN ARREGLO CON LAS COLUMNAS QUE RECUPERAREMOS DE LA TABLA CUENTAS
+		String[] columnas = new String[]{
+    		  "_id",
+    		  DBHelper.FECHA,
+    		  DBHelper.MONTO,
+    		  DBHelper.PERSONAS,
+    		  DBHelper.PROPINA,
+    		  DBHelper.MONTO_PERSONAL};
+		
+//		ESTE CURSOR ES EQUIVALENTE A "SELECT CAMPOS FROM CUENTAS WHERE FECHA=FECHA QUE RECIBIMOS DEL URI"
+		Cursor c = db.query(DBHelper.TABLE_NAME, columnas, null, null, null, null, "_id" + " ASC ");
+      
+//		RECUPERAMOS LOS INDICES DE LAS COLUMNAS QUE NOS ARROJO LA CONSULTA ANTERIOR
+		try {
+			int indexFecha=c.getColumnIndex(DBHelper.FECHA);
+			int indexMonto=c.getColumnIndex(DBHelper.MONTO);
+			int indexPersonas=c.getColumnIndex(DBHelper.PERSONAS);
+			int indexPropina=c.getColumnIndex(DBHelper.PROPINA);
+			int indexMontoPersonal=c.getColumnIndex(DBHelper.MONTO_PERSONAL);
+			
+			Locale us = new Locale(Locale.US.getLanguage(), Locale.US.getCountry());
+			SimpleDateFormat f = new SimpleDateFormat(bdDateFormat, us);
+			
+			for (c.moveToFirst();!c.isAfterLast();c.moveToNext()){      			
+								
+				Date fecha = f.parse(c.getString(indexFecha));				
+				double monto = Double.valueOf(c.getString(indexMonto));
+				int personas = Integer.valueOf(c.getString(indexPersonas));
+				double propina = Double.valueOf(c.getString(indexPropina));
+				double montoxPersona = Double.valueOf(c.getString(indexMontoPersonal));
+				
+				CtaHistorial_DTO unaCta = new CtaHistorial_DTO();
+				unaCta.setFecha(fecha);
+				unaCta.setMontoCta(monto);
+				unaCta.setPersonas(personas);
+				unaCta.setPropina(propina);
+				unaCta.setMontoxPersona(montoxPersona);
+				
+				lista.add(unaCta);
+				
+			}
+		} catch (ParseException e) {
+			Log.v("BDLaCuenta_DAO.getCtasByDate", "Pex: " + e.getMessage());
+		}
+
+		
+//		CERRAMOS LA CONEXION
+		db.close();
+		
+		return lista;
 	}
 }

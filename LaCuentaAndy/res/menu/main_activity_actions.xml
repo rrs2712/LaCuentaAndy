@@ -10,6 +10,10 @@
           android:title="@string/action_consulta"
           android:showAsAction="never" />
     
+    <item android:id="@+id/action_borrar"
+          android:title="@string/action_borrar"
+          android:showAsAction="never" />
+    
     <item android:id="@+id/action_export"
           android:title="@string/action_export"
           android:showAsAction="never" />

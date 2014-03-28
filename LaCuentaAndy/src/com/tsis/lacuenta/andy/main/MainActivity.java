@@ -1,6 +1,7 @@
 package com.tsis.lacuenta.andy.main;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.os.Bundle;
@@ -22,7 +23,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.tsis.lacuenta.andy.bo.Export;
 import com.tsis.lacuenta.andy.dao.BDLaCuenta_DAO;
+import com.tsis.lacuenta.core.dto.CtaHistorial_DTO;
 import com.tsis.lacuenta.core.main.Cuenta;
 
 public class MainActivity extends ActionBarActivity {
@@ -270,8 +273,11 @@ public class MainActivity extends ActionBarActivity {
 	        case R.id.action_consulta:
 	            showCta();
 	            return true;
-	        case R.id.action_export:
+	        case R.id.action_borrar:
 	        	borrarTabla();
+	            return true;
+	        case R.id.action_export:
+	        	exportCSV();
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -297,6 +303,12 @@ public class MainActivity extends ActionBarActivity {
 		TextView resul = (TextView) findViewById(R.id.resultado_tv);
 		BDLaCuenta_DAO bd = new BDLaCuenta_DAO(MainActivity.this);
 		resul.setText(bd.deleteAll());
+	}
+	
+	public void exportCSV(){
+		TextView resul = (TextView) findViewById(R.id.resultado_tv);
+		Export exp = new Export(MainActivity.this);
+		resul.setText("Exportado="+exp.exportFile());
 	}
 
 //	/**
