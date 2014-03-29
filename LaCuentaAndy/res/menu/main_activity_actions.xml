@@ -14,7 +14,11 @@
 <!--           android:title="@string/action_borrar" -->
 <!--           android:showAsAction="never" /> -->
     
-    <item android:id="@+id/action_export"
-          android:title="@string/action_export"
+    <item android:id="@+id/action_exportMes"
+          android:title="@string/action_exportMes"
+          android:showAsAction="never" />
+    
+    <item android:id="@+id/action_exportFecha"
+          android:title="@string/action_exportFechas"
           android:showAsAction="never" />
 </menu>

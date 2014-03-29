@@ -57,6 +57,22 @@ public class Export extends Activity {
 		StringBuilder contenido = getFileContent(ini.getTime(), fin.getTime());
 		return writeToFile(FILENAME, contenido.toString(), this.contexto);
 	}
+	
+	public boolean exportByDate(Calendar ini) {
+		ini.set(Calendar.HOUR_OF_DAY, 0);
+		ini.set(Calendar.MINUTE, 0);
+		ini.set(Calendar.SECOND, 0);
+		
+		Calendar fin = new GregorianCalendar();
+		fin.setTime(ini.getTime());
+		fin.add(Calendar.MONTH, 1);
+		fin.set(Calendar.HOUR_OF_DAY, 23);
+		fin.set(Calendar.MINUTE, 59);
+		fin.set(Calendar.SECOND, 59);
+		
+		StringBuilder contenido = getFileContent(ini.getTime(), fin.getTime());
+		return writeToFile(FILENAME, contenido.toString(), this.contexto);
+	}
 
 	private boolean writeToFile(String fileName, String contenido, Context contexto) {
 		

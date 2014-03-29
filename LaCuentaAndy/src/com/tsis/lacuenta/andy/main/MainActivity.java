@@ -1,9 +1,12 @@
 package com.tsis.lacuenta.andy.main;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -18,6 +21,7 @@ import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -26,7 +30,6 @@ import android.widget.ToggleButton;
 
 import com.tsis.lacuenta.andy.bo.Export;
 import com.tsis.lacuenta.andy.dao.BDLaCuenta_DAO;
-import com.tsis.lacuenta.core.dto.CtaHistorial_DTO;
 import com.tsis.lacuenta.core.main.Cuenta;
 
 public class MainActivity extends ActionBarActivity {
@@ -35,6 +38,7 @@ public class MainActivity extends ActionBarActivity {
 	private Spinner personasSpn,propinaSpn;
 	private ToggleButton redondeoTgg;
 	private TextView resulTv;
+	private DatePicker datePicker;
 	
 	private double monto=0;
 	private int personas=1;
@@ -45,6 +49,12 @@ public class MainActivity extends ActionBarActivity {
 	private int maxPersonas=100;
 	private final double noMonto=0;
 	private final double noPropina=0;
+	
+	private int year;
+	private int month;
+	private int day;
+	static final int DATE_DIALOG_ID = 999;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);		
@@ -57,6 +67,7 @@ public class MainActivity extends ActionBarActivity {
 		addPropinaPorListener();
 		addPropinaFijListener();
 		addRedondeoListener();
+		setCurrentDateOnView();
 		
 		
 //		if (savedInstanceState == null) {
@@ -64,6 +75,20 @@ public class MainActivity extends ActionBarActivity {
 //					.add(R.id.container, new PlaceholderFragment()).commit();
 //		}
 
+	}
+	
+	public void setCurrentDateOnView() {
+		datePicker = (DatePicker) findViewById(R.id.fecha_dp);
+ 
+		final Calendar c = Calendar.getInstance();
+		year = c.get(Calendar.YEAR);
+		month = c.get(Calendar.MONTH);
+		day = c.get(Calendar.DAY_OF_MONTH);
+ 
+ 
+		// set current date into datepicker
+		datePicker.init(year, month, day, null);
+ 
 	}
 	
 	private void addRedondeoListener() {
@@ -198,10 +223,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void onNothingSelected(AdapterView<?> parent) {}
 		});
 		
 		
@@ -221,16 +243,10 @@ public class MainActivity extends ActionBarActivity {
 			
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				
-			}
+					int after) {}
 			
 			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void afterTextChanged(Editable s) {}
 		});
 		
 	}
@@ -277,8 +293,11 @@ public class MainActivity extends ActionBarActivity {
 //	        case R.id.action_borrar:
 //	        	borrarTabla();
 //	            return true;
-	        case R.id.action_export:
-	        	exportCSV();
+	        case R.id.action_exportMes:
+	        	exportCSV_ByMonth();
+	            return true;
+	        case R.id.action_exportFecha:
+	        	showDialog(DATE_DIALOG_ID);
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -306,18 +325,52 @@ public class MainActivity extends ActionBarActivity {
 		resul.setText(bd.deleteAll());
 	}
 	
-	public void exportCSV(){
-//		TextView resul = (TextView) findViewById(R.id.resultado_tv);
+	public void exportCSV_ByMonth(){
 		Export exp = new Export(MainActivity.this);
-		
 		if (exp.exportByCurrentMonth()) {
-			Toast.makeText(MainActivity.this, "Archivo exportado con exito!", Toast.LENGTH_SHORT).show();;
+			Toast.makeText(MainActivity.this, "Archivo mensual exportado con exito!", Toast.LENGTH_SHORT).show();;
 		}else {
-			Toast.makeText(MainActivity.this, "Archivo no exportado", Toast.LENGTH_SHORT).show();;
+			Toast.makeText(MainActivity.this, "Archivo mensual no exportado", Toast.LENGTH_SHORT).show();;
 		}
-		
-//		resul.setText("Exportado="+exp.exportByCurrentMonth());
 	}
+	
+	public void exportCSV_ByDate(Calendar fechaCorte){
+		Export exp = new Export(MainActivity.this);
+		if (exp.exportByDate(fechaCorte)) {
+			Toast.makeText(MainActivity.this, "Archivo con fecha corte exportado con exito!", Toast.LENGTH_SHORT).show();;
+		}else {
+			Toast.makeText(MainActivity.this, "Archivo con fecha corte exportado no exportado", Toast.LENGTH_SHORT).show();;
+		}		
+	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DATE_DIALOG_ID:
+		   // set date picker as current date
+		   return new DatePickerDialog(MainActivity.this, datePickerListener, year, month,day);
+		}
+		return null;
+	}
+ 
+	private DatePickerDialog.OnDateSetListener datePickerListener 
+                = new DatePickerDialog.OnDateSetListener() {
+ 
+		// when dialog box is closed, below method will be called.
+		public void onDateSet(DatePicker view, int selectedYear,
+				int selectedMonth, int selectedDay) {
+			year = selectedYear;
+			month = selectedMonth;
+			day = selectedDay;
+ 
+			// set selected date into datepicker also
+			datePicker.init(year, month, day, null);
+			
+			Calendar fechaCorte = new GregorianCalendar(selectedYear, selectedMonth, selectedDay);
+			exportCSV_ByDate(fechaCorte);
+ 
+		}
+	};
 
 //	/**
 //	 * A placeholder fragment containing a simple view.
