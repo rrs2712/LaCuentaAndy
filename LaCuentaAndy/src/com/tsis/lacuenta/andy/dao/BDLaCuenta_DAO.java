@@ -57,7 +57,7 @@ public class BDLaCuenta_DAO {
 	
 
 	public String consultaTodo(){
-		String respuesta ="";
+		String respuesta ="Date*Cta*Personas*Propina*c/u\n\n";
 		
 //      CREAMOS UNA NUEVA CONEXION PARA LEER DATOS DE LA BD
 		DBHelper dbHelper = new DBHelper(context);

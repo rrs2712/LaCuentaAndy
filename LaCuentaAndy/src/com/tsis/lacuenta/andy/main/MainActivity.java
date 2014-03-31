@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,9 +35,11 @@ import com.tsis.lacuenta.core.main.Cuenta;
 
 public class MainActivity extends ActionBarActivity {
 
+	private final String TAG = MainActivity.class.getName();
+	
 	private EditText montoEd, propinaEd;
 	private Spinner personasSpn,propinaSpn;
-	private ToggleButton redondeoTgg;
+	private ToggleButton redondeoTgg,propinaTgg;
 	private TextView resulTv;
 	private DatePicker datePicker;
 	
@@ -64,6 +67,7 @@ public class MainActivity extends ActionBarActivity {
 		addItemsToSpinners();
 		addMontoListener();
 		addPersonasListener();
+		addPropinaTggListener();
 		addPropinaPorListener();
 		addPropinaFijListener();
 		addRedondeoListener();
@@ -99,6 +103,34 @@ public class MainActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				redondear = (redondear) ? false:true;
 				CalularCta();
+			}
+		});	
+		
+	}
+	
+	private void addPropinaTggListener() {
+		propinaSpn = (Spinner) findViewById(R.id.propina_spn);
+		propinaEd = (EditText) findViewById(R.id.propina_ed);
+		
+		propinaTgg = (ToggleButton) findViewById(R.id.propina_tgg);
+		propinaTgg.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				boolean isOn = propinaTgg.isChecked();
+				Log.d(TAG, "El estado del boton es = " + isOn);
+				if (isOn) {
+					propinaEd.setVisibility(View.VISIBLE);
+					propinaSpn.setVisibility(View.GONE);
+					Log.d(TAG, "Muestra Editbox y esconde Spinner");
+				}else {
+					propinaEd.setVisibility(View.GONE);
+					propinaSpn.setVisibility(View.VISIBLE);
+					Log.d(TAG, "Muestra Spinner y esconde Editbox");
+				}
+				
+				
 			}
 		});	
 		
@@ -287,12 +319,12 @@ public class MainActivity extends ActionBarActivity {
 	        case R.id.action_save:
 	            saveCta();
 	            return true;
-//	        case R.id.action_consulta:
-//	            showCta();
-//	            return true;
-//	        case R.id.action_borrar:
-//	        	borrarTabla();
-//	            return true;
+	        case R.id.action_consulta:
+	            showCta();
+	            return true;
+	        case R.id.action_borrar:
+	        	borrarTabla();
+	            return true;
 	        case R.id.action_exportMes:
 	        	exportCSV_ByMonth();
 	            return true;

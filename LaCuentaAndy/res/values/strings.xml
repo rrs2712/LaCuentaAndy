@@ -32,6 +32,8 @@
     <string name="propina_tv">Propina:</string>
     <string name="propina_spn_header">Porcentaje de propina:</string>
     <string name="propina_ed_hint">$00.00</string>
+    <string name="propina_tgg_on">Propina $</string>
+    <string name="propina_tgg_off">Propina %</string>
     <string-array name="propina_spn_filler">
 	    <item> 5</item>
 	    <item>10</item>
@@ -42,6 +44,8 @@
 <!--     redondear -->
     <string name="redondear_tv">Redondear: </string>
     <string name="home_sp_tip">Redondear: </string>
+    <string name="redondear_on">Redondear ON</string>
+    <string name="redondear_off">Redondear OFF </string>
     
 <!--     actions -->
     <string name="action_save">Guardar</string>
