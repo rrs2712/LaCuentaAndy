@@ -238,11 +238,9 @@ int id action_bar_overlay_layout 0x7f05001f
 int id action_bar_root 0x7f05001a
 int id action_bar_subtitle 0x7f050023
 int id action_bar_title 0x7f050022
-int id action_borrar 0x7f050049
-int id action_consulta 0x7f050048
 int id action_context_bar 0x7f05001d
-int id action_exportFecha 0x7f05004b
-int id action_exportMes 0x7f05004a
+int id action_exportFecha 0x7f050049
+int id action_exportMes 0x7f050048
 int id action_menu_divider 0x7f050016
 int id action_menu_presenter 0x7f050017
 int id action_mode_close_button 0x7f050024

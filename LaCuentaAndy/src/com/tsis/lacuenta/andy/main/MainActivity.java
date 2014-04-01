@@ -319,12 +319,12 @@ public class MainActivity extends ActionBarActivity {
 	        case R.id.action_save:
 	            saveCta();
 	            return true;
-	        case R.id.action_consulta:
-	            showCta();
-	            return true;
-	        case R.id.action_borrar:
-	        	borrarTabla();
-	            return true;
+//	        case R.id.action_consulta:
+//	            showCta();
+//	            return true;
+//	        case R.id.action_borrar:
+//	        	borrarTabla();
+//	            return true;
 	        case R.id.action_exportMes:
 	        	exportCSV_ByMonth();
 	            return true;
@@ -338,11 +338,13 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	public void saveCta(){
-		TextView resul = (TextView) findViewById(R.id.resultado_tv);
 		BDLaCuenta_DAO bd = new BDLaCuenta_DAO(MainActivity.this);
 		Cuenta cuenta = new Cuenta(monto, personas, propina, tipoCta);
-		bd.insert(monto, personas, propina,cuenta.getCtaIndividual(redondear));
-		resul.setText("Guardado!");
+		if (bd.insert(monto, personas, propina,cuenta.getCtaIndividual(redondear))) {
+			Toast.makeText(MainActivity.this, "Cuenta guardada!", Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(MainActivity.this, "No se ha podido guardar la cuenta.", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	public void showCta(){
@@ -360,18 +362,18 @@ public class MainActivity extends ActionBarActivity {
 	public void exportCSV_ByMonth(){
 		Export exp = new Export(MainActivity.this);
 		if (exp.exportByCurrentMonth()) {
-			Toast.makeText(MainActivity.this, "Archivo mensual exportado con exito!", Toast.LENGTH_SHORT).show();;
+			Toast.makeText(MainActivity.this, "Archivo mensual exportado con exito!", Toast.LENGTH_SHORT).show();
 		}else {
-			Toast.makeText(MainActivity.this, "Archivo mensual no exportado", Toast.LENGTH_SHORT).show();;
+			Toast.makeText(MainActivity.this, "Archivo mensual no exportado", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
 	public void exportCSV_ByDate(Calendar fechaCorte){
 		Export exp = new Export(MainActivity.this);
 		if (exp.exportByDate(fechaCorte)) {
-			Toast.makeText(MainActivity.this, "Archivo con fecha corte exportado con exito!", Toast.LENGTH_SHORT).show();;
+			Toast.makeText(MainActivity.this, "Archivo con fecha corte exportado con exito!", Toast.LENGTH_SHORT).show();
 		}else {
-			Toast.makeText(MainActivity.this, "Archivo con fecha corte exportado no exportado", Toast.LENGTH_SHORT).show();;
+			Toast.makeText(MainActivity.this, "Archivo con fecha corte exportado no exportado", Toast.LENGTH_SHORT).show();
 		}		
 	}
 	
